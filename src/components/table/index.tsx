@@ -272,96 +272,98 @@ const Table = () => {
     // setIsAIPlaying(true);
     // await delay(1000).then(() => setIsAIPlaying(false));
 
-    if (plays === 1) {
-      array_setSpotTexts[0]("X");
-      array_setSpotValues[0](3);
-    }
-
-    if (plays === 2) {
-      if (array_spotValues[4] === 2) {
-        playN(4);
-      } else {
-        playN(0);
-      }
-    }
-
-    if (plays === 3) {
-      if (array_spotValues[8] === 2) {
-        playN(8);
-      } else {
-        playN(2);
-      }
-    }
-
-    if (plays === 4) {
-      let winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
-      if (winningSpot !== 0) {
-        //player can win
-        playN(winningSpot); //prevents player from winning
-      } else {
-        playN(make2(array_spotValues)); //TODO check here
-      }
-    }
-
-    if (plays === 5) {
-      let winningSpot = canWin(array_spotValues, _COMPUTER_STARTS);
-      if (winningSpot !== 0) {
-        //computer can win
-        playN(winningSpot); //win!
-      } else {
-        //computer cant win
-        winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
-        if (winningSpot !== 0) {
-          //if player can win
-          playN(winningSpot); // prevent player from winning
+    if (plays % 2 === 0) {
+      //even plays
+      if (plays === 2) {
+        if (array_spotValues[4] === 2) {
+          playN(4);
         } else {
-          // nobody can win
-          if (array_spotValues[6] === 2) {
-            playN(6);
+          playN(0);
+        }
+      }
+      if (plays === 4) {
+        let winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
+        if (winningSpot !== 0) {
+          //player can win
+          playN(winningSpot); //prevents player from winning
+        } else {
+          playN(make2(array_spotValues)); //TODO check here
+        }
+      }
+      if (plays === 6) {
+        let winningSpot = canWin(array_spotValues, _COMPUTER_STARTS);
+        if (winningSpot !== 0) {
+          playN(winningSpot);
+        } else {
+          winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
+          if (winningSpot !== 0) {
+            playN(winningSpot);
           } else {
-            playN(2);
+            playN(make2(array_spotValues));
           }
         }
       }
-    }
-
-    if (plays === 6) {
-      let winningSpot = canWin(array_spotValues, _COMPUTER_STARTS);
-      if (winningSpot !== 0) {
-        playN(winningSpot);
-      } else {
-        winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
+      if (plays === 8) {
+        let winningSpot = canWin(array_spotValues, _COMPUTER_STARTS);
         if (winningSpot !== 0) {
           playN(winningSpot);
         } else {
-          playN(make2(array_spotValues));
+          winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
+          if (winningSpot !== 0) {
+            playN(winningSpot);
+          } else {
+            playN(getFirstEmpty(array_spotValues));
+          }
         }
       }
-    }
+    } else {
+      // odd plays
+      if (plays === 1) {
+        array_setSpotTexts[0]("X");
+        array_setSpotValues[0](3);
+      }
 
-    if (plays === 7 || plays === 9) {
-      let winningSpot = canWin(array_spotValues, _COMPUTER_STARTS);
-      if (winningSpot !== 0) {
-        playN(winningSpot);
-      } else {
-        winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
-        if (winningSpot !== 0) {
-          playN(winningSpot);
+      if (plays === 3) {
+        if (array_spotValues[8] === 2) {
+          playN(8);
         } else {
-          playN(getFirstEmpty(array_spotValues));
+          playN(2);
         }
       }
-    }
-    if (plays === 8) {
-      let winningSpot = canWin(array_spotValues, _COMPUTER_STARTS);
-      if (winningSpot !== 0) {
-        playN(winningSpot); 
-      } else {
-        winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
+
+      if (plays === 5) {
+        let winningSpot = canWin(array_spotValues, _COMPUTER_STARTS);
+        if (winningSpot !== 0) {
+          //computer can win
+          playN(winningSpot); //win!
+        } else {
+          //computer cant win
+          winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
+          if (winningSpot !== 0) {
+            //if player can win
+            playN(winningSpot); // prevent player from winning
+          } else {
+            // nobody can win
+            if (array_spotValues[6] === 2) {
+              playN(6);
+            } else {
+              playN(2);
+            }
+          }
+        }
+      }
+
+      if (plays === 7 || plays === 9) {
+        let winningSpot = canWin(array_spotValues, _COMPUTER_STARTS);
         if (winningSpot !== 0) {
           playN(winningSpot);
         } else {
-          playN(getFirstEmpty(array_spotValues));
+          winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
+          if (winningSpot !== 0) {
+            playN(winningSpot);
+          } else {
+            playN(getFirstEmpty(array_spotValues));
+          }
         }
       }
     }
