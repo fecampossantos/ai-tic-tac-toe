@@ -119,7 +119,7 @@ const Table = () => {
 
   const [startingPlayer, setStartingPlayer] = useState(_PLAYER_STARTS);
 
-  const [isAIPlaying, setIsAIPlaying] = useState(false);
+  // const [isAIPlaying, setIsAIPlaying] = useState(false);
 
   const [showBadge, setShowBadge] = useState(false);
   const [badgeMessage, setBadgeMessage] = useState("");
@@ -254,7 +254,7 @@ const Table = () => {
   const showComputerBadge = () => {
     setBadgeMessage("Computer won!");
     setShowBadge(true);
-    // resetGame();
+    resetGame();
   };
   const showUserBadge = () => {
     setBadgeMessage("User won!");
@@ -264,12 +264,12 @@ const Table = () => {
   const showTieBadge = () => {
     setBadgeMessage("It is a tie!");
     setShowBadge(true);
-    // resetGame();
+    resetGame();
   };
 
   const callAI = async () => {
-    setIsAIPlaying(true);
-    await delay(1000).then(() => setIsAIPlaying(false));
+    // setIsAIPlaying(true);
+    // await delay(1000).then(() => setIsAIPlaying(false));
 
     if (plays === 1) {
       array_setSpotTexts[0]("X");
@@ -325,15 +325,15 @@ const Table = () => {
     }
 
     if (plays === 6) {
-      let winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
+      let winningSpot = canWin(array_spotValues, _COMPUTER_STARTS);
       if (winningSpot !== 0) {
-        playN(winningSpot); // prevent user from winning
+        playN(winningSpot);
       } else {
-        winningSpot = canWin(array_spotValues, _COMPUTER_STARTS);
+        winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
         if (winningSpot !== 0) {
-          playN(winningSpot); //win game
+          playN(winningSpot);
         } else {
-          playN(make2(array_spotValues)); //TODO fix here
+          playN(make2(array_spotValues));
         }
       }
     }
@@ -352,13 +352,13 @@ const Table = () => {
       }
     }
     if (plays === 8) {
-      let winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
+      let winningSpot = canWin(array_spotValues, _COMPUTER_STARTS);
       if (winningSpot !== 0) {
-        playN(winningSpot); // prevent user from winning
+        playN(winningSpot); 
       } else {
-        winningSpot = canWin(array_spotValues, _COMPUTER_STARTS);
+        winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
         if (winningSpot !== 0) {
-          playN(winningSpot); //win
+          playN(winningSpot);
         } else {
           playN(getFirstEmpty(array_spotValues));
         }

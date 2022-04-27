@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./App.css";
 import styled from "styled-components";
 import Table from "components/table";
@@ -15,7 +15,6 @@ const Container = styled.div`
 
 
 function App() {
-  const [showBadge, setShowBadge] = useState(false);
   return (
     <Container>
       <Table />
