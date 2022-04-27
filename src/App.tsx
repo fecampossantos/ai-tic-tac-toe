@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import styled from "styled-components";
 import Table from "components/table";
@@ -10,9 +10,12 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
 `;
 
+
 function App() {
+  const [showBadge, setShowBadge] = useState(false);
   return (
     <Container>
       <Table />

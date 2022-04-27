@@ -19,9 +19,11 @@ export const checkWin = (table: any[], plays: number) => {
 
       if (lineResult === _VALUE_COMPUTER_WINS) {
         computerWon = true;
+        tie = false;
         break;
       } else if (lineResult === _VALUE_USER_WINS) {
         userWon = true;
+        tie = false;
         break;
       }
   }
@@ -36,12 +38,32 @@ export const checkWin = (table: any[], plays: number) => {
 
       if (columnResult === _VALUE_COMPUTER_WINS) {
         computerWon = true;
+        tie = false;
         break;
       } else if (columnResult === _VALUE_USER_WINS) {
         userWon = true;
+        tie = false;
         break;
       }
   }
+
+  // check diagonals
+  if(table[0]*table[4]*table[8] === _VALUE_COMPUTER_WINS){
+    tie = false;
+    computerWon = true;
+  } 
+  if(table[0]*table[4]*table[8] === _VALUE_USER_WINS){
+    tie = false;
+    userWon = true;
+  } 
+  if(table[2]*table[4]*table[6] === _VALUE_COMPUTER_WINS){
+    tie = false;
+    computerWon = true;
+  }
+  if(table[2]*table[4]*table[6] === _VALUE_USER_WINS){
+    tie = false;
+    userWon = true;
+  } 
 
   return { userWon, computerWon, tie };
 };

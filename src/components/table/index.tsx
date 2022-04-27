@@ -8,6 +8,8 @@ import Label from "components/Label";
 import { delay } from "helpers/delay";
 import { checkWin } from "helpers/checkWin";
 
+import Badge from "components/Badge";
+
 const Tb = styled.div`
   display: grid;
   grid-template-rows: 150px 150px 150px;
@@ -119,14 +121,27 @@ const Table = () => {
 
   const [isAIPlaying, setIsAIPlaying] = useState(false);
 
+  const [showBadge, setShowBadge] = useState(false);
+  const [badgeMessage, setBadgeMessage] = useState("");
+
   const resetGame = async () => {
-    if (isAIPlaying) await delay(1000);
-    setPlays(1);
-    setIsUserTurn(false);
-    setStartingPlayer(_PLAYER_STARTS);
-    array_setSpotTexts.forEach((t: any) => t(""));
-    array_setSpotValues.forEach((t: any) => t(2));
-    setIsGameRunning(false);
+    await delay(2100).then(() => {
+      setShowBadge(false);
+      setPlays(1);
+      setIsUserTurn(false);
+      setStartingPlayer(_PLAYER_STARTS);
+      array_setSpotTexts.forEach((t: any) => t(""));
+      array_setSpotValues.forEach((t: any) => t(2));
+      setIsGameRunning(false);
+    });
+    // if (isAIPlaying) await delay(1000);
+    // if (showBadge) await delay(1000).then(() => setShowBadge(false));
+    // setPlays(1);
+    // setIsUserTurn(false);
+    // setStartingPlayer(_PLAYER_STARTS);
+    // array_setSpotTexts.forEach((t: any) => t(""));
+    // array_setSpotValues.forEach((t: any) => t(2));
+    // setIsGameRunning(false);
   };
 
   const array_setSpotTexts = [
@@ -230,11 +245,27 @@ const Table = () => {
 
   useEffect(() => {
     let { userWon, computerWon, tie } = checkWin(array_spotValues, plays);
-    if (userWon) console.log("user won");
-    if (computerWon) console.log("computer won");
+    if (userWon) showUserBadge();
+    if (computerWon) showComputerBadge();
 
-    if (plays === 9 && tie) console.log("tie");
+    if (plays === 10 && tie) showTieBadge();
   }, [plays]);
+
+  const showComputerBadge = () => {
+    setBadgeMessage("Computer won!");
+    setShowBadge(true);
+    // resetGame();
+  };
+  const showUserBadge = () => {
+    setBadgeMessage("User won!");
+    setShowBadge(true);
+    resetGame();
+  };
+  const showTieBadge = () => {
+    setBadgeMessage("It is a tie!");
+    setShowBadge(true);
+    // resetGame();
+  };
 
   const callAI = async () => {
     setIsAIPlaying(true);
@@ -357,6 +388,7 @@ const Table = () => {
 
   return (
     <Container>
+      {showBadge && <Badge>{badgeMessage}</Badge>}
       <ControllerContainer>
         <SelectPlayerContainer>
           <Label for="selectPlayerJogador">
