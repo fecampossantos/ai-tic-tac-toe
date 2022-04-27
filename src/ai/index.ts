@@ -104,6 +104,5 @@ export const canWin = (table: any[], playerID: number) => {
       winningSpot = table[6] === 2 ? 6 : table[4] === 2 ? 4 : 2;
     }
   }
-  console.log("winning spot -> " + winningSpot);
   return winningSpot;
 };

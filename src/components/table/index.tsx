@@ -6,6 +6,7 @@ import Button from "components/Button";
 import Radio from "components/Radio";
 import Label from "components/Label";
 import { delay } from "helpers/delay";
+import { checkWin } from "helpers/checkWin";
 
 const Tb = styled.div`
   display: grid;
@@ -50,7 +51,7 @@ const Container = styled.div`
   border-radius: 10px;
   padding: 20px;
 
-  height:90vh;
+  height: 90vh;
 `;
 
 const ControllerContainer = styled.div`
@@ -116,12 +117,16 @@ const Table = () => {
 
   const [startingPlayer, setStartingPlayer] = useState(_PLAYER_STARTS);
 
-  const resetGame = () => {
+  const [isAIPlaying, setIsAIPlaying] = useState(false);
+
+  const resetGame = async () => {
+    if (isAIPlaying) await delay(1000);
     setPlays(1);
     setIsUserTurn(false);
     setStartingPlayer(_PLAYER_STARTS);
     array_setSpotTexts.forEach((t: any) => t(""));
     array_setSpotValues.forEach((t: any) => t(2));
+    setIsGameRunning(false);
   };
 
   const array_setSpotTexts = [
@@ -135,6 +140,7 @@ const Table = () => {
     setSpot8text,
     setSpot9text,
   ];
+
   const array_setSpotValues = [
     setSpot1value,
     setSpot2value,
@@ -158,6 +164,7 @@ const Table = () => {
     spot8text,
     spot9text,
   ];
+
   const array_spotValues = [
     spot1value,
     spot2value,
@@ -182,6 +189,8 @@ const Table = () => {
   };
 
   const startGame = () => {
+    setIsGameRunning(true);
+
     if (startingPlayer === _COMPUTER_STARTS) {
       if (plays % 2 === 0) {
         setIsUserTurn(true);
@@ -219,8 +228,17 @@ const Table = () => {
     }
   }, [plays]);
 
+  useEffect(() => {
+    let { userWon, computerWon, tie } = checkWin(array_spotValues, plays);
+    if (userWon) console.log("user won");
+    if (computerWon) console.log("computer won");
+
+    if (plays === 9 && tie) console.log("tie");
+  }, [plays]);
+
   const callAI = async () => {
-    await delay(1000);
+    setIsAIPlaying(true);
+    await delay(1000).then(() => setIsAIPlaying(false));
 
     if (plays === 1) {
       array_setSpotTexts[0]("X");
@@ -246,21 +264,26 @@ const Table = () => {
     if (plays === 4) {
       let winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
       if (winningSpot !== 0) {
-        playN(winningSpot);
+        //player can win
+        playN(winningSpot); //prevents player from winning
       } else {
-        playN(make2(array_spotValues));
+        playN(make2(array_spotValues)); //TODO check here
       }
     }
 
     if (plays === 5) {
       let winningSpot = canWin(array_spotValues, _COMPUTER_STARTS);
       if (winningSpot !== 0) {
-        playN(winningSpot);
+        //computer can win
+        playN(winningSpot); //win!
       } else {
+        //computer cant win
         winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
         if (winningSpot !== 0) {
-          playN(winningSpot);
+          //if player can win
+          playN(winningSpot); // prevent player from winning
         } else {
+          // nobody can win
           if (array_spotValues[6] === 2) {
             playN(6);
           } else {
@@ -273,13 +296,13 @@ const Table = () => {
     if (plays === 6) {
       let winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
       if (winningSpot !== 0) {
-        playN(winningSpot);
+        playN(winningSpot); // prevent user from winning
       } else {
         winningSpot = canWin(array_spotValues, _COMPUTER_STARTS);
         if (winningSpot !== 0) {
-          playN(winningSpot);
+          playN(winningSpot); //win game
         } else {
-          playN(make2(array_spotValues));
+          playN(make2(array_spotValues)); //TODO fix here
         }
       }
     }
@@ -300,11 +323,11 @@ const Table = () => {
     if (plays === 8) {
       let winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
       if (winningSpot !== 0) {
-        playN(winningSpot);
+        playN(winningSpot); // prevent user from winning
       } else {
         winningSpot = canWin(array_spotValues, _COMPUTER_STARTS);
         if (winningSpot !== 0) {
-          playN(winningSpot);
+          playN(winningSpot); //win
         } else {
           playN(getFirstEmpty(array_spotValues));
         }
@@ -321,12 +344,10 @@ const Table = () => {
   };
 
   const handleStartGame = () => {
-    setIsGameRunning(true);
     startGame();
   };
 
   const handleResetGame = () => {
-    setIsGameRunning(false);
     resetGame();
   };
 
