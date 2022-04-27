@@ -5,6 +5,7 @@ import { canWin, make2, getFirstEmpty } from "ai";
 import Button from "components/Button";
 import Radio from "components/Radio";
 import Label from "components/Label";
+import { delay } from "helpers/delay";
 
 const Tb = styled.div`
   display: grid;
@@ -48,6 +49,8 @@ const Container = styled.div`
   box-shadow: 10px 10px 10px 1px rgb(0, 0, 0);
   border-radius: 10px;
   padding: 20px;
+
+  height:90vh;
 `;
 
 const ControllerContainer = styled.div`
@@ -167,14 +170,6 @@ const Table = () => {
     spot9value,
   ];
 
-  function delay(delayInms: number) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(2);
-      }, delayInms);
-    });
-  }
-
   const handleClick: Function = (spot: any) => {
     if (!isUserTurn) return;
 
@@ -249,7 +244,7 @@ const Table = () => {
     }
 
     if (plays === 4) {
-      let winningSpot = canWin(array_spotValues, _COMPUTER_STARTS);
+      let winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
       if (winningSpot !== 0) {
         playN(winningSpot);
       } else {
@@ -366,7 +361,7 @@ const Table = () => {
           </Label>
         </SelectPlayerContainer>
         <ControllerButtonsContainer>
-          <Button onClick={handleStartGame}>start</Button>
+          {!isGameRunning && <Button onClick={handleStartGame}>start</Button>}
           {isGameRunning && <Button onClick={handleResetGame}>reset</Button>}
         </ControllerButtonsContainer>
       </ControllerContainer>
