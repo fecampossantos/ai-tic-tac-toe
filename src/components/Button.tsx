@@ -15,13 +15,20 @@ const Bt = styled.a`
   background-image: linear-gradient(45deg, #c270c0, #ff991f);
   font-size: 25px;
   font-weight: 600;
-
-  transition: all 0.8s ease-in-out;
+  box-shadow: 0px 0px 10px #fff;
+  transition: all 0.2s ease-in-out;
 
   :hover {
     background-image: linear-gradient(90deg, #c270c0, #ff991f);
   }
+
+  :active {
+  box-shadow:  0px 0px 6px #fff;
+
+  }
 `;
+
+
 
 const Button = ({ onClick, label = "button", children }: any) => {
   return <Bt onClick={onClick}>{children || label}</Bt>;

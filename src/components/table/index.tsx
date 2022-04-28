@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import Spot from "./spot";
-import { canWin, make2, getFirstEmpty } from "ai";
+import { letAIChoose } from "ai";
 import Button from "components/Button";
 import Radio from "components/Radio";
 import Label from "components/Label";
@@ -10,6 +10,9 @@ import { delay } from "helpers/delay";
 import { checkWin } from "helpers/checkWin";
 
 import Badge from "components/Badge";
+
+const _COMPUTER_STARTS = 1; // X
+const _PLAYER_STARTS = 2; // O
 
 const Tb = styled.div`
   display: grid;
@@ -80,8 +83,7 @@ const ControllerButtonsContainer = styled.div`
 `;
 
 const Table = () => {
-  const _COMPUTER_STARTS = 1; // X
-  const _PLAYER_STARTS = 2; // O
+
 
   const [isGameRunning, setIsGameRunning] = useState(false);
 
@@ -120,13 +122,11 @@ const Table = () => {
 
   const [startingPlayer, setStartingPlayer] = useState(_PLAYER_STARTS);
 
-  // const [isAIPlaying, setIsAIPlaying] = useState(false);
-
   const [showBadge, setShowBadge] = useState(false);
   const [badgeMessage, setBadgeMessage] = useState("");
 
   const resetGame = async () => {
-    await delay(2100).then(() => {
+    await delay(900).then(() => {
       setShowBadge(false);
       setPlays(1);
       setIsUserTurn(false);
@@ -135,14 +135,6 @@ const Table = () => {
       array_setSpotValues.forEach((t: any) => t(2));
       setIsGameRunning(false);
     });
-    // if (isAIPlaying) await delay(1000);
-    // if (showBadge) await delay(1000).then(() => setShowBadge(false));
-    // setPlays(1);
-    // setIsUserTurn(false);
-    // setStartingPlayer(_PLAYER_STARTS);
-    // array_setSpotTexts.forEach((t: any) => t(""));
-    // array_setSpotValues.forEach((t: any) => t(2));
-    // setIsGameRunning(false);
   };
 
   const array_setSpotTexts = [
@@ -269,105 +261,9 @@ const Table = () => {
   };
 
   const callAI = async () => {
-    // setIsAIPlaying(true);
-    // await delay(1000).then(() => setIsAIPlaying(false));
-
-    if (plays % 2 === 0) {
-      //even plays
-      if (plays === 2) {
-        if (array_spotValues[4] === 2) {
-          playN(4);
-        } else {
-          playN(0);
-        }
-      }
-      if (plays === 4) {
-        let winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
-        if (winningSpot !== 0) {
-          //player can win
-          playN(winningSpot); //prevents player from winning
-        } else {
-          playN(make2(array_spotValues)); //TODO check here
-        }
-      }
-      if (plays === 6) {
-        let winningSpot = canWin(array_spotValues, _COMPUTER_STARTS);
-        if (winningSpot !== 0) {
-          playN(winningSpot);
-        } else {
-          winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
-          if (winningSpot !== 0) {
-            playN(winningSpot);
-          } else {
-            playN(make2(array_spotValues));
-          }
-        }
-      }
-      if (plays === 8) {
-        let winningSpot = canWin(array_spotValues, _COMPUTER_STARTS);
-        if (winningSpot !== 0) {
-          playN(winningSpot);
-        } else {
-          winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
-          if (winningSpot !== 0) {
-            playN(winningSpot);
-          } else {
-            playN(getFirstEmpty(array_spotValues));
-          }
-        }
-      }
-    } else {
-      // odd plays
-      if (plays === 1) {
-        array_setSpotTexts[0]("X");
-        array_setSpotValues[0](3);
-      }
-
-      if (plays === 3) {
-        if (array_spotValues[8] === 2) {
-          playN(8);
-        } else {
-          playN(2);
-        }
-      }
-
-      if (plays === 5) {
-        let winningSpot = canWin(array_spotValues, _COMPUTER_STARTS);
-        if (winningSpot !== 0) {
-          //computer can win
-          playN(winningSpot); //win!
-        } else {
-          //computer cant win
-          winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
-          if (winningSpot !== 0) {
-            //if player can win
-            playN(winningSpot); // prevent player from winning
-          } else {
-            // nobody can win
-            if (array_spotValues[6] === 2) {
-              playN(6);
-            } else {
-              playN(2);
-            }
-          }
-        }
-      }
-
-      if (plays === 7 || plays === 9) {
-        let winningSpot = canWin(array_spotValues, _COMPUTER_STARTS);
-        if (winningSpot !== 0) {
-          playN(winningSpot);
-        } else {
-          winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
-          if (winningSpot !== 0) {
-            playN(winningSpot);
-          } else {
-            playN(getFirstEmpty(array_spotValues));
-          }
-        }
-      }
-    }
-
+    if(plays >= 9) return
+    const spot: number | undefined = await letAIChoose(plays, array_spotValues);
+    playN(spot!);
     setPlays(plays + 1);
     setIsUserTurn(true);
   };
@@ -428,63 +324,63 @@ const Table = () => {
           onClick={() => handleClick(spot1)}
           label={spot1text}
           value={spot1value}
-        ></Spot>
+        />
         <Spot
           id={"2"}
           ref={spot2}
           onClick={() => handleClick(spot2)}
           label={spot2text}
           value={spot2value}
-        ></Spot>
+        />
         <Spot
           id={"3"}
           ref={spot3}
           onClick={() => handleClick(spot3)}
           label={spot3text}
           value={spot3value}
-        ></Spot>
+        />
         <Spot
           id={"4"}
           ref={spot4}
           onClick={() => handleClick(spot4)}
           label={spot4text}
           value={spot4value}
-        ></Spot>
+        />
         <Spot
           id={"5"}
           ref={spot5}
           onClick={() => handleClick(spot5)}
           label={spot5text}
           value={spot5value}
-        ></Spot>
+        />
         <Spot
           id={"6"}
           ref={spot6}
           onClick={() => handleClick(spot6)}
           label={spot6text}
           value={spot6value}
-        ></Spot>
+        />
         <Spot
           id={"7"}
           ref={spot7}
           onClick={() => handleClick(spot7)}
           label={spot7text}
           value={spot7value}
-        ></Spot>
+        />
         <Spot
           id={"8"}
           ref={spot8}
           onClick={() => handleClick(spot8)}
           label={spot8text}
           value={spot8value}
-        ></Spot>
+        />
         <Spot
           id={"9"}
           ref={spot9}
           onClick={() => handleClick(spot9)}
           label={spot9text}
           value={spot9value}
-        ></Spot>
+        />
       </Tb>
     </Container>
   );

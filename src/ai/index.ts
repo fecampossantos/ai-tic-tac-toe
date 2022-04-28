@@ -1,3 +1,9 @@
+import { delay } from "helpers/delay";
+import { randomBetween } from "helpers/randomBetween";
+
+const _COMPUTER_STARTS = 1; // X
+const _PLAYER_STARTS = 2; // O
+
 export const make2 = (table: any[]): number => {
   if (table[5] === 2) {
     return 5;
@@ -105,4 +111,99 @@ export const canWin = (table: any[], playerID: number) => {
     }
   }
   return winningSpot;
+};
+
+export const letAIChoose = async (plays: number, array_spotValues: number[]) => {
+  let miliseconds = randomBetween(800, 1200);
+  await delay(miliseconds)
+
+  if (plays % 2 === 0) {
+    //even plays
+    if (plays === 2) {
+      if (array_spotValues[4] === 2) {
+        return 4;
+      } else {
+        return 0;
+      }
+    }
+    if (plays === 4) {
+      let winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
+      if (winningSpot !== 0) {
+        return winningSpot;
+      } else {
+        return make2(array_spotValues);
+      }
+    }
+    if (plays === 6) {
+      let winningSpot = canWin(array_spotValues, _COMPUTER_STARTS);
+      if (winningSpot !== 0) {
+        return winningSpot;
+      } else {
+        winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
+        if (winningSpot !== 0) {
+          return winningSpot;
+        } else {
+          return make2(array_spotValues);
+        }
+      }
+    }
+    if (plays === 8) {
+      let winningSpot = canWin(array_spotValues, _COMPUTER_STARTS);
+      if (winningSpot !== 0) {
+        return winningSpot;
+      } else {
+        winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
+        if (winningSpot !== 0) {
+          return winningSpot;
+        } else {
+          return getFirstEmpty(array_spotValues);
+        }
+      }
+    }
+  } else {
+    // odd plays
+    if (plays === 1) {
+      return 0;
+    }
+
+    if (plays === 3) {
+      if (array_spotValues[8] === 2) {
+        return 8;
+      } else {
+        return 2;
+      }
+    }
+
+    if (plays === 5) {
+      let winningSpot = canWin(array_spotValues, _COMPUTER_STARTS);
+      if (winningSpot !== 0) {
+        return winningSpot;
+      } else {
+        winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
+        if (winningSpot !== 0) {
+          return winningSpot;
+        } else {
+          if (array_spotValues[6] === 2) {
+            return 6;
+          } else {
+            return 2;
+          }
+        }
+      }
+    }
+
+    if (plays === 7 || plays === 9) {
+      let winningSpot = canWin(array_spotValues, _COMPUTER_STARTS);
+      if (winningSpot !== 0) {
+        return winningSpot;
+      } else {
+        winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
+        if (winningSpot !== 0) {
+          return winningSpot;
+        } else {
+          return getFirstEmpty(array_spotValues);
+        }
+      }
+    }
+  }
 };
