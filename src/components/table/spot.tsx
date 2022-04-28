@@ -28,19 +28,20 @@ const Container = styled.a`
   @media (max-width: 1024px) {
     width: 90px;
     height: 90px;
+    font-size: 60px;
   }
-  
+
   @media (max-width: 500px) {
     width: 60px;
     height: 60px;
+    font-size: 40px;
   }
 
   @media (max-width: 300px) {
     width: 50px;
     height: 50px;
+    font-size: 30px;
   }
-
-
 `;
 
 interface Props {
