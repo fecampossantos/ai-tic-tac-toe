@@ -141,7 +141,7 @@ const Table = () => {
   const [badgeMessage, setBadgeMessage] = useState("");
 
   const resetGame = async () => {
-    await delay(900).then(() => {
+    await delay(2000).then(() => {
       setShowBadge(false);
       setPlays(1);
       setIsUserTurn(false);

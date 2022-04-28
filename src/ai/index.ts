@@ -34,7 +34,7 @@ export const getFirstEmpty = (table: any[]): number => {
 };
 
 export const canWin = (table: any[], playerID: number) => {
-  let winningSpot = 0;
+  let winningSpot = -1;
   if (playerID === 1) {
     // plays with x
 
@@ -128,7 +128,7 @@ export const letAIChoose = async (plays: number, array_spotValues: number[]) => 
     }
     if (plays === 4) {
       let winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
-      if (winningSpot !== 0) {
+      if (winningSpot !== -1) {
         return winningSpot;
       } else {
         return make2(array_spotValues);
@@ -136,11 +136,11 @@ export const letAIChoose = async (plays: number, array_spotValues: number[]) => 
     }
     if (plays === 6) {
       let winningSpot = canWin(array_spotValues, _COMPUTER_STARTS);
-      if (winningSpot !== 0) {
+      if (winningSpot !== -1) {
         return winningSpot;
       } else {
         winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
-        if (winningSpot !== 0) {
+        if (winningSpot !== -1) {
           return winningSpot;
         } else {
           return make2(array_spotValues);
@@ -149,11 +149,11 @@ export const letAIChoose = async (plays: number, array_spotValues: number[]) => 
     }
     if (plays === 8) {
       let winningSpot = canWin(array_spotValues, _COMPUTER_STARTS);
-      if (winningSpot !== 0) {
+      if (winningSpot !== -1) {
         return winningSpot;
       } else {
         winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
-        if (winningSpot !== 0) {
+        if (winningSpot !== -1) {
           return winningSpot;
         } else {
           return getFirstEmpty(array_spotValues);
@@ -176,11 +176,11 @@ export const letAIChoose = async (plays: number, array_spotValues: number[]) => 
 
     if (plays === 5) {
       let winningSpot = canWin(array_spotValues, _COMPUTER_STARTS);
-      if (winningSpot !== 0) {
+      if (winningSpot !== -1) {
         return winningSpot;
       } else {
         winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
-        if (winningSpot !== 0) {
+        if (winningSpot !== -1) {
           return winningSpot;
         } else {
           if (array_spotValues[6] === 2) {
@@ -194,11 +194,11 @@ export const letAIChoose = async (plays: number, array_spotValues: number[]) => 
 
     if (plays === 7 || plays === 9) {
       let winningSpot = canWin(array_spotValues, _COMPUTER_STARTS);
-      if (winningSpot !== 0) {
+      if (winningSpot !== -1) {
         return winningSpot;
       } else {
         winningSpot = canWin(array_spotValues, _PLAYER_STARTS);
-        if (winningSpot !== 0) {
+        if (winningSpot !== -1) {
           return winningSpot;
         } else {
           return getFirstEmpty(array_spotValues);
