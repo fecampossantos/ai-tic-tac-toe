@@ -38,6 +38,18 @@ const Bdg = styled.div`
   opacity: 0;
 
   animation: ${zoomBadge} 2s ease-in-out 1;
+
+  @media (max-width: 1024px) {
+    left: 35%;
+  }
+
+  @media (max-width: 500px) {
+    left: 20%;
+  }
+
+  @media (max-width: 300px) {
+    left: 15%;
+  }
 `;
 
 const TextWrapper = styled.span`
