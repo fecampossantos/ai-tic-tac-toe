@@ -39,9 +39,9 @@ const Tb = styled.div`
   }
 
   @media (max-width: 300px) {
-    grid-template-rows: 40px 40px 40px;
-    grid-template-columns: 40px 40px 40px;
-    gap: 20px;
+    grid-template-rows: 50px 50px 50px;
+    grid-template-columns: 50px 50px 50px;
+    gap: 15px;
 
     margin: 20px;
   }
@@ -58,6 +58,21 @@ const Container = styled.div`
   padding: 20px;
 
   height: 90vh;
+
+  @media (max-width: 1024px) {
+    height: 80vh;
+
+  }
+
+  @media (max-width: 500px) {
+    height: 60vh;
+
+  }
+
+  @media (max-width: 300px) {
+    height: 50vh;
+
+  }
 `;
 
 const ControllerContainer = styled.div`
