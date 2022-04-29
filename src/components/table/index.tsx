@@ -6,7 +6,7 @@ import { letAIChoose } from "ai";
 import Button from "components/Button";
 import Radio from "components/Radio";
 import Label from "components/Label";
-import { delay } from "helpers/delay";
+//import { delay } from "helpers/delay";
 import { checkWin } from "helpers/checkWin";
 
 import Badge from "components/Badge";
@@ -140,8 +140,8 @@ const Table = () => {
   const [showBadge, setShowBadge] = useState(false);
   const [badgeMessage, setBadgeMessage] = useState("");
 
-  const resetGame = async () => {
-    await delay(2000).then(() => {
+  const resetGame = () => {
+   //await delay(2000).then(() => {
       setShowBadge(false);
       setPlays(1);
       setIsUserTurn(false);
@@ -149,7 +149,7 @@ const Table = () => {
       array_setSpotTexts.forEach((t: any) => t(""));
       array_setSpotValues.forEach((t: any) => t(2));
       setIsGameRunning(false);
-    });
+    //});
   };
 
   const array_setSpotTexts = [
@@ -275,9 +275,9 @@ const Table = () => {
     resetGame();
   };
 
-  const callAI = async () => {
+  const callAI =  () => {
     if(plays >= 9) return
-    const spot: number | undefined = await letAIChoose(plays, array_spotValues);
+    const spot: number | undefined =  letAIChoose(plays, array_spotValues);
     playN(spot!);
     setPlays(plays + 1);
     setIsUserTurn(true);

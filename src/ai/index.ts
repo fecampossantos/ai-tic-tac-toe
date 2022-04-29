@@ -1,5 +1,5 @@
-import { delay } from "helpers/delay";
-import { randomBetween } from "helpers/randomBetween";
+//import { delay } from "helpers/delay";
+//import { randomBetween } from "helpers/randomBetween";
 
 const _COMPUTER_STARTS = 1; // X
 const _PLAYER_STARTS = 2; // O
@@ -114,8 +114,8 @@ export const canWin = (table: any[], playerID: number) => {
 };
 
 export const letAIChoose = async (plays: number, array_spotValues: number[]) => {
-  let miliseconds = randomBetween(800, 1200);
-  await delay(miliseconds)
+  //let miliseconds = randomBetween(800, 1200);
+  //await delay(miliseconds)
 
   if (plays % 2 === 0) {
     //even plays
